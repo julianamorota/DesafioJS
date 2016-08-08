@@ -12,16 +12,13 @@
     <input type="button" onclick="adicionarCidade()" value="Ok">
     <input type="button" onclick="listarEscolas()" value="Listar escolas">
     <br><br>
-    <input type="button" onclick="camposCadastro('visible')" value="Nova escola">
-    <br><br>
 
-    <label id="lblEscola" style="visibility:hidden">Escola: </label>
-    <input type="text" id="escola" style="visibility:hidden">
+    <label id="lblEscola">Escola: </label>
+    <input type="text" id="escola">
     <br>
-    <input type="button" id="btnAddEscola" onclick="adicionarEscola()" value="Salvar" style="visibility:hidden">
-    <input type="button" id="btnAlterar" onclick="editarEscola()" value="Alterar" style="visibility:hidden">
-    <br>
-
+    <input type="button" id="btnAddEscola" onclick="adicionarEscola()" value="Salvar" >
+    <input type="button" id="btnAlterar" onclick="editarEscola()" value="Alterar" >
+    <br><br><br>
     Busca:
     <select id="cbbFiltro">
       <option value="escola">Escola</option>

@@ -56,7 +56,9 @@ function listarEscolas()
 {
   try
   {
-    camposCadastro('hidden');
+    limparLista();
+	botoesEditarExcluir('hidden');
+	document.getElementById("escola").value = "";
     botoesEditarExcluir('visible');
     limparLista();
     for (var i = 0; i < cadastro.length; i++)
@@ -87,20 +89,6 @@ function listarEscolas()
     alert(e);
   }
 
-}
-
-//alterar a visibilidade dos campos
-function camposCadastro(tipo)
-{
-  limparLista();
-  botoesEditarExcluir('hidden');
-  document.getElementById("escola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAddEscola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("lblEscola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAlterar").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAlterar").disabled = true;
-  document.getElementById("btnAddEscola").disabled = false;
-  document.getElementById("escola").value = "";
 }
 
 function botoesEditarExcluir(tipo)
@@ -150,12 +138,11 @@ function adicionarEscola()
     {
       console.log(cadastro.length);
       cadastro[cadastro.length] = {escola: nomeEscola};
+	  //limpa text da escola
+	  document.getElementById("escola").value = "";
+	  carregaCombo();
+	  alert("Cadastro realizado com sucesso!");
     }
-    //limpa text da escola
-    document.getElementById("escola").value = "";
-    carregaCombo();
-    testLista();
-    alert("Cadastro realizado com sucesso!");
   }
   catch (e)
   {
@@ -170,7 +157,9 @@ function editarEscola()
     var id = document.getElementById("escola").name;
     var escola = document.getElementById("escola").value;
     cadastro[id].escola = escola;
-    camposCadastro('hidden');
+	document.getElementById("btnAlterar").disabled = true;
+	document.getElementById("btnAddEscola").disabled = false;
+	document.getElementById("escola").value = "";
     carregaCombo();
     listarEscolas();
     alert("Alteracao realizada com sucesso!");
@@ -229,10 +218,10 @@ function validarEdicao()
   if(cont == 1)
   {
     limparLista();
-    camposCadastro('visible');
     botoesEditarExcluir('hidden');
-    document.getElementById("btnAddEscola").disabled = true;
-    document.getElementById("btnAlterar").disabled = false;
+	document.getElementById("btnAlterar").disabled = false;
+	document.getElementById("btnAddEscola").disabled = true;
+	document.getElementById("escola").value = "";
     document.getElementById('escola').value = cadastro[id].escola;
     document.getElementById('escola').name = id;
   }
@@ -244,31 +233,69 @@ function validarEdicao()
 
 function buscar()
 {
-  var opcao = document.getElementById("cbbFiltro").value;
-  var pesquisa = document.getElementById("pesquisa").value;
-  console.log(escola);
-  for (var i = 0; i < cadastro.length; i++)
-  {
-    if (cadastro[i].opcao == pesquisa)
-    {
+	limparLista();
+	botoesEditarExcluir();
+	var opcao = document.getElementById("cbbFiltro").value;
+	var pesquisa = document.getElementById("pesquisa").value;
+	if (typeof pesquisa == "undefined")
+	{
+		var id = -1;
+		if (opcao == "escola")
+		{
+			for (var i = 0; i < cadastro.length; i++)
+			{
+				if (cadastro[i].escola == pesquisa)
+				{
+					id = i;
+				}
+			}
+		}
+		else
+		{
+			for (var i = 0; i < cadastro.length; i++)
+			{
+				if (cadastro[i].cidade == pesquisa)
+				{
+					id = i;
+				}
+			}
+		}
+		
+		if (id != -1)
+		{
+		  var lista = document.getElementById("lista");
+		  var cidade = cadastro[id].cidade;
+		  if(typeof cidade == "undefined")
+		  {
+			  cidade = "-"
+		  }
+		  var desc = cadastro[id].escola + " / " + cidade;
+		  var checkbox = document.createElement("input");
+		  checkbox.type = "checkbox";
+		  checkbox.name = "item";
+		  checkbox.id = id;
+		  lista.appendChild(checkbox);
 
-    }
-  }
+		  var label = document.createElement('label')
+		  label.htmlFor = desc;
+		  label.appendChild(document.createTextNode(desc));
 
+		  lista.appendChild(label);
+		  lista.appendChild(document.createElement("br"));
+		}
+		else
+		{
+			alert("Nenhuma escola/cidade encontrada");
+		}
+	}
+	else
+	{
+		alert("Digite o nome da escola/cidade");
+	}
 }
 
 
-///*
-//teste listarEscolas
-function testLista()
-{
-  for (var i=0; i < cadastro.length; i++)
-  {
-    console.log(cadastro[i].escola);
-    console.log(cadastro[i].cidade);
-  }
-}
-//*/
 inicializaArray();
 carregaCombo();
-testLista();
+document.getElementById("btnAlterar").disabled = true;
+
