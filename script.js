@@ -1,5 +1,4 @@
-//array global para guardar as escolas
-//cadastro.escola e cadastro.cidade
+//array global - cadastro.escola e cadastro.cidade
 var cadastro = [];
 
 //inicializar o array com 5 escolas
@@ -12,26 +11,13 @@ function inicializaArray()
   }
 }
 
+//limpa a lista de escolas
 function limparLista()
 {
   var lista = document.getElementById("lista");
   while(lista.firstChild)
   {
     lista.removeChild(lista.firstChild);
-  }
-}
-
-//mostrar todas as escolas cadastradas em uma ul
-function listarEscolas()
-{
-  camposCadastro('hidden');
-  limparLista();
-  for (var i = 0; i < cadastro.length; i++)
-  {
-    var lista = document.getElementById("lista");
-    var item = document.createElement('li');
-    item.innerText = cadastro[i].escola;
-    lista.appendChild(item);
   }
 }
 
@@ -57,26 +43,47 @@ function carregaCombo()
   }
 }
 
-//cadastrar escola e cidade
-function adicionar()
+//cadastrar cidade para a escola selecionada
+function adicionarCidade()
 {
-  //salva no array
-  var valorE = document.getElementById("cbbEscola").value;
-	if(valorE == -1)
+  //pega id da escola
+  var id = document.getElementById("cbbEscola").value;
+	if(id == -1)
 	{
 		alert("Selecione uma escola");
 	}
 	else
 	{
-    console.log(valorE);
-    cadastro[valorE].cidade = document.getElementById("cidade").value;
+    console.log(id);
+    cadastro[id].cidade = document.getElementById("cidade").value;
     carregaCombo();
     document.getElementById("cidade").value = "";
   }
   testLista();
-
 }
 
+//cadastrar nova escola
+function adicionarEscola()
+{
+  limparLista();
+  var nomeEscola = document.getElementById("escola").value;
+  //verifica se o campo está em branco
+  if(nomeEscola.length === 0)
+  {
+    alert("Digite o nome de uma escola");
+  }
+  else
+  {
+    console.log(cadastro.length);
+    cadastro[cadastro.length] = {escola: nomeEscola};
+  }
+  //limpa text da escola
+  document.getElementById("escola").value = "";
+  carregaCombo();
+  testLista();
+}
+
+/*
 function buscar()
 {
 	limparLista();
@@ -98,7 +105,9 @@ function buscar()
 		document.getElementById("btnExcluir").setAttribute('style', 'visibility:visible');
 	}
 }
+*/
 
+/*
 function excluir()
 {
 	var id = document.getElementById("cbbEscola").value;
@@ -112,41 +121,26 @@ function editarEscola(id, nomeEsc, nomeCid)
   escola[id] = nomeEsc;
   cidade[id] = nomeCid;
 }
-//apresenta os campos para cadastro de uma nova escola
+
+*/
+//show or hide os campos para cadastro de uma nova escola
 function camposCadastro(tipo)
 {
   limparLista();
-  document.getElementById("escola").setAttribute('style', 'visibility:' +tipo);
-  document.getElementById("btnAddEscola").setAttribute('style', 'visibility:'+tipo);
-  document.getElementById("lblEscola").setAttribute('style', 'visibility:'+tipo);
+  document.getElementById("escola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAddEscola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("lblEscola").setAttribute('style', 'visibility:' + tipo);
 }
 
-function addEscola()
-{
-  limparLista();
 
-  var nomeEscola = document.getElementById("escola").value;
-  console.log(nomeEscola);
-  if(nomeEscola.length === 0)
-  {
-    alert("Digite o nome de uma escola");
-  }
-  else
-  {
-    console.log(cadastro.length);
-    cadastro[cadastro.length] = {escola: nomeEscola};
-  }
-  document.getElementById("escola").value = "";
-  carregaCombo();
-}
 
-function checkboxTeste()
+function listarEscolas()
 {
   camposCadastro('hidden');
   limparLista();
   for (var i = 0; i < cadastro.length; i++)
   {
-    var lista = document.getElementById("checkboxLista");
+    var lista = document.getElementById("lista");
     var desc = cadastro[i].escola;
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -159,10 +153,11 @@ function checkboxTeste()
     label.appendChild(document.createTextNode(desc));
 
     lista.appendChild(label);
-    lista.appendChild(document.createElement("br")); 
+    lista.appendChild(document.createElement("br"));
   }
 }
 
+///*
 //teste listarEscolas
 function testLista()
 {
@@ -172,6 +167,7 @@ function testLista()
     console.log(cadastro[i].cidade);
   }
 }
+//*/
 inicializaArray();
 carregaCombo();
 testLista();
