@@ -1,7 +1,7 @@
 //array global - cadastro.escola e cadastro.cidade
 var cadastro = [];
 
-//inicializar o array com 5 escolas
+//inicializa o array com 5 escolas
 function inicializaArray()
 {
   var i;
@@ -29,10 +29,10 @@ function carregaCombo()
   //adiciona itens nos combos
   var cbbEscola = document.getElementById("cbbEscola");
   //opção de busca vazia
-  var opVaziaEscola = document.createElement('option');
-  opVaziaEscola.innerHTML = "-";
-  opVaziaEscola.value = -1;
-  cbbEscola.appendChild(opVaziaEscola);
+  var opVazia = document.createElement('option');
+  opVazia.innerHTML = "-";
+  opVazia.value = -1;
+  cbbEscola.appendChild(opVazia);
   //preenche combos
   for (var i = 0; i < cadastro.length; i++)
   {
@@ -83,6 +83,39 @@ function adicionarEscola()
   testLista();
 }
 
+function editarEscola()
+{
+  var id = document.getElementById("escola").name;
+  var escola = document.getElementById("escola").value;
+  cadastro[id].escola = escola;
+  camposCadastro('hidden');
+  carregaCombo();
+  listarEscolas();
+}
+
+function listarEscolas()
+{
+  camposCadastro('hidden');
+  botoesEditarExcluir('visible');
+  limparLista();
+  for (var i = 0; i < cadastro.length; i++)
+  {
+    var lista = document.getElementById("lista");
+    var desc = cadastro[i].escola;
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "item";
+    checkbox.id = i;
+    lista.appendChild(checkbox);
+
+    var label = document.createElement('label')
+    label.htmlFor = desc;
+    label.appendChild(document.createTextNode(desc));
+
+    lista.appendChild(label);
+    lista.appendChild(document.createElement("br"));
+  }
+}
 /*
 function buscar()
 {
@@ -107,54 +140,77 @@ function buscar()
 }
 */
 
-/*
 function excluir()
 {
-	var id = document.getElementById("cbbEscola").value;
-	cadastro.splice(id, 1);
-	limparLista();
-	carregaCombo();
+  var checkbox = document.getElementsByName("item");
+  var checked = false;
+  for (var i = checkbox.length - 1; i >= 0; i--)
+  {
+    if (checkbox[i].checked == true)
+    {
+      cadastro.splice(i, 1);
+      checked = true;
+    }
+  }
+  if(checked)
+  {
+  	limparLista();
+    listarEscolas();
+  	carregaCombo();
+  }
+  else
+  {
+    alert("Selecione pelo menos um item para excluir");
+  }
 }
 
-function editarEscola(id, nomeEsc, nomeCid)
+function validaEditar()
 {
-  escola[id] = nomeEsc;
-  cidade[id] = nomeCid;
+  var checkbox = document.getElementsByName("item");
+  var cont = 0;
+  var id;
+  for (var i = checkbox.length - 1; i >= 0; i--)
+  {
+    if (checkbox[i].checked == true)
+    {
+      id = i;
+      cont++;
+    }
+  }
+  if(cont == 1)
+  {
+    limparLista();
+    camposCadastro('visible');
+    botoesEditarExcluir('hidden');
+    document.getElementById("btnAddEscola").disabled = true;
+    document.getElementById("btnAlterar").disabled = false;
+    document.getElementById('escola').value = cadastro[id].escola;
+    document.getElementById('escola').name = id;
+  }
+  else
+  {
+    alert("Selecione um item para editar");
+  }
 }
 
-*/
 //show or hide os campos para cadastro de uma nova escola
 function camposCadastro(tipo)
 {
   limparLista();
+  botoesEditarExcluir('hidden');
   document.getElementById("escola").setAttribute('style', 'visibility:' + tipo);
   document.getElementById("btnAddEscola").setAttribute('style', 'visibility:' + tipo);
   document.getElementById("lblEscola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAlterar").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAlterar").disabled = true;
+  document.getElementById("btnAddEscola").disabled = false;
+  document.getElementById("escola").value = "";
 }
 
-
-
-function listarEscolas()
+function botoesEditarExcluir(tipo)
 {
-  camposCadastro('hidden');
-  limparLista();
-  for (var i = 0; i < cadastro.length; i++)
-  {
-    var lista = document.getElementById("lista");
-    var desc = cadastro[i].escola;
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = desc;
-    checkbox.value = i;
-    lista.appendChild(checkbox);
-
-    var label = document.createElement('label')
-    label.htmlFor = desc;
-    label.appendChild(document.createTextNode(desc));
-
-    lista.appendChild(label);
-    lista.appendChild(document.createElement("br"));
-  }
+  document.getElementById("btnEditar").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnExcluir").setAttribute('style', 'visibility:' + tipo);
 }
 
 ///*

@@ -3,7 +3,6 @@
   <head>
   </head>
   <body>
-
     <h3>Cadastro de escola</h3>
     Escola: <select id="cbbEscola"> </select>
     <br>
@@ -15,15 +14,20 @@
     <input type="button" onclick="camposCadastro('visible')" value="Nova escola">
     <br><br>
 
-    <label id="lista"></label>
     <label id="lblEscola" style="visibility:hidden">Escola: </label>
     <input type="text" id="escola" style="visibility:hidden">
     <br>
     <input type="button" id="btnAddEscola" onclick="adicionarEscola()" value="Salvar" style="visibility:hidden">
+    <input type="button" id="btnAlterar" onclick="editarEscola()" value="Alterar" style="visibility:hidden">
+    <br>
+    <label id="lista"></label>
+    <br>
+    <input type="button" id="btnEditar" value="Editar" onclick="validaEditar()" style="visibility:hidden">
+  	<input type="button" id="btnExcluir" value="Excluir" onclick="excluir()" style="visibility:hidden">
+    <br>
 
 
-	<input type="button" id="btnEditar" value="Editar" onclick="editar()" style="visibility:hidden">
-	<input type="button" id="btnExcluir" value="Excluir" onclick="excluir()" style="visibility:hidden">
-	<script src="script.js"></script>
+
+  	<script src="script.js"></script>
   </body>
 </html>
