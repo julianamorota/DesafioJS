@@ -22,51 +22,66 @@ function limparLista()
   }
 }
 
-//carregar cbb de escola
+//carregar combo da escola
 function carregaCombo()
 {
-  //limpa os combos
-  document.getElementById("cbbEscola").innerHTML = "";
-  //adiciona itens nos combos
-  var cbbEscola = document.getElementById("cbbEscola");
-  //opção de busca vazia
-  var opVazia = document.createElement('option');
-  opVazia.innerHTML = "-";
-  opVazia.value = -1;
-  cbbEscola.appendChild(opVazia);
-  //preenche combos
-  for (var i = 0; i < cadastro.length; i++)
+  try
   {
-    var opE = document.createElement('option');
-    opE.innerHTML = cadastro[i].escola;
-    opE.value = i;
-    cbbEscola.appendChild(opE);
+    //limpa os combos
+    document.getElementById("cbbEscola").innerHTML = "";
+    //adiciona itens nos combos
+    var cbbEscola = document.getElementById("cbbEscola");
+    //opção de busca vazia
+    var opVazia = document.createElement('option');
+    opVazia.innerHTML = "-";
+    opVazia.value = -1;
+    cbbEscola.appendChild(opVazia);
+    //preenche combos
+    for (var i = 0; i < cadastro.length; i++)
+    {
+      var opE = document.createElement('option');
+      opE.innerHTML = cadastro[i].escola;
+      opE.value = i;
+      cbbEscola.appendChild(opE);
+    }
+  }
+  catch (e)
+  {
+    alert(e);
   }
 }
 
 //listar escolas cadastrados
 function listarEscolas()
 {
-  camposCadastro('hidden');
-  botoesEditarExcluir('visible');
-  limparLista();
-  for (var i = 0; i < cadastro.length; i++)
+  try
   {
-    var lista = document.getElementById("lista");
-    var desc = cadastro[i].escola;
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "item";
-    checkbox.id = i;
-    lista.appendChild(checkbox);
+    camposCadastro('hidden');
+    botoesEditarExcluir('visible');
+    limparLista();
+    for (var i = 0; i < cadastro.length; i++)
+    {
+      var lista = document.getElementById("lista");
+      var desc = cadastro[i].escola;
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.name = "item";
+      checkbox.id = i;
+      lista.appendChild(checkbox);
 
-    var label = document.createElement('label')
-    label.htmlFor = desc;
-    label.appendChild(document.createTextNode(desc));
+      var label = document.createElement('label')
+      label.htmlFor = desc;
+      label.appendChild(document.createTextNode(desc));
 
-    lista.appendChild(label);
-    lista.appendChild(document.createElement("br"));
+      lista.appendChild(label);
+      lista.appendChild(document.createElement("br"));
+    }
   }
+  catch (e)
+  {
+    alert(e);
+  }
+
 }
 
 //alterar a visibilidade dos campos
@@ -92,73 +107,105 @@ function botoesEditarExcluir(tipo)
 
 function adicionarCidade()
 {
-  //pega id da escola
-  var id = document.getElementById("cbbEscola").value;
-	if(id == -1)
-	{
-		alert("Selecione uma escola");
-	}
-	else
-	{
-    console.log(id);
-    cadastro[id].cidade = document.getElementById("cidade").value;
-    carregaCombo();
-    document.getElementById("cidade").value = "";
+  try
+  {
+    //pega id da escola
+    var id = document.getElementById("cbbEscola").value;
+  	if(id == -1)
+  	{
+  		alert("Selecione uma escola");
+  	}
+  	else
+  	{
+      console.log(id);
+      cadastro[id].cidade = document.getElementById("cidade").value;
+      carregaCombo();
+      document.getElementById("cidade").value = "";
+    }
+    alert("Cadastro realizado com sucesso!");
   }
-  testLista();
+  catch(e)
+  {
+    alert(e);
+  }
+
 }
 
 function adicionarEscola()
 {
-  limparLista();
-  var nomeEscola = document.getElementById("escola").value;
-  //verifica se o campo está em branco
-  if(nomeEscola.length === 0)
+  try
   {
-    alert("Digite o nome de uma escola");
+    limparLista();
+    var nomeEscola = document.getElementById("escola").value;
+    //verifica se o campo está em branco
+    if(nomeEscola.length === 0)
+    {
+      alert("Digite o nome de uma escola");
+    }
+    else
+    {
+      console.log(cadastro.length);
+      cadastro[cadastro.length] = {escola: nomeEscola};
+    }
+    //limpa text da escola
+    document.getElementById("escola").value = "";
+    carregaCombo();
+    testLista();
+    alert("Cadastro realizado com sucesso!");
   }
-  else
+  catch (e)
   {
-    console.log(cadastro.length);
-    cadastro[cadastro.length] = {escola: nomeEscola};
+    alert(e);
   }
-  //limpa text da escola
-  document.getElementById("escola").value = "";
-  carregaCombo();
-  testLista();
 }
 
 function editarEscola()
 {
-  var id = document.getElementById("escola").name;
-  var escola = document.getElementById("escola").value;
-  cadastro[id].escola = escola;
-  camposCadastro('hidden');
-  carregaCombo();
-  listarEscolas();
+  try
+  {
+    var id = document.getElementById("escola").name;
+    var escola = document.getElementById("escola").value;
+    cadastro[id].escola = escola;
+    camposCadastro('hidden');
+    carregaCombo();
+    listarEscolas();
+    alert("Alteracao realizada com sucesso!");
+  }
+  catch (e)
+  {
+    alert(e);
+  }
 }
 
 function excluirEscola()
 {
-  var checkbox = document.getElementsByName("item");
-  var checked = false;
-  for (var i = checkbox.length - 1; i >= 0; i--)
+  try
   {
-    if (checkbox[i].checked == true)
+    var checkbox = document.getElementsByName("item");
+    var checked = false;
+    for (var i = checkbox.length - 1; i >= 0; i--)
     {
-      cadastro.splice(i, 1);
-      checked = true;
+      if (checkbox[i].checked == true)
+      {
+        cadastro.splice(i, 1);
+        checked = true;
+      }
+    }
+    if(checked)
+    {
+      limparLista();
+      listarEscolas();
+      carregaCombo();
+      alert("Exclusao realizada com sucesso!");
+    }
+    else
+    {
+      alert("Selecione pelo menos um item para excluir");
     }
   }
-  if(checked)
+  catch (e)
   {
-  	limparLista();
-    listarEscolas();
-  	carregaCombo();
-  }
-  else
-  {
-    alert("Selecione pelo menos um item para excluir");
+    alert(e);
   }
 }
 
