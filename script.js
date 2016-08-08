@@ -62,7 +62,12 @@ function listarEscolas()
     for (var i = 0; i < cadastro.length; i++)
     {
       var lista = document.getElementById("lista");
-      var desc = cadastro[i].escola;
+      var cidade = cadastro[i].cidade;
+      if(typeof cidade == "undefined")
+      {
+          cidade = "-"
+      }
+      var desc = cadastro[i].escola + " / " + cidade;
       var checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.name = "item";
@@ -117,18 +122,17 @@ function adicionarCidade()
   	}
   	else
   	{
-      console.log(id);
       cadastro[id].cidade = document.getElementById("cidade").value;
       carregaCombo();
       document.getElementById("cidade").value = "";
     }
     alert("Cadastro realizado com sucesso!");
+    listarEscolas();
   }
   catch(e)
   {
     alert(e);
   }
-
 }
 
 function adicionarEscola()
@@ -238,29 +242,21 @@ function validarEdicao()
   }
 }
 
-/*
 function buscar()
 {
-	limparLista();
-	var valorE = document.getElementById("cbbEscola").value;
-	if(valorE == -1)
-	{
-		alert("Selecione uma escola");
-	}
-	else
-	{
-		var lista = document.getElementById("lista");
-		var escola = document.createElement('li');
-		escola.innerText = cadastro[valorE].escola;
-		lista.appendChild(escola);
-		var cidade = document.createElement('li');
-		cidade.innerText = cadastro[valorE].cidade;
-		lista.appendChild(cidade);
-		document.getElementById("btnEditar").setAttribute('style', 'visibility:visible');
-		document.getElementById("btnExcluir").setAttribute('style', 'visibility:visible');
-	}
+  var opcao = document.getElementById("cbbFiltro").value;
+  var pesquisa = document.getElementById("pesquisa").value;
+  console.log(escola);
+  for (var i = 0; i < cadastro.length; i++)
+  {
+    if (cadastro[i].opcao == pesquisa)
+    {
+
+    }
+  }
+
 }
-*/
+
 
 ///*
 //teste listarEscolas
