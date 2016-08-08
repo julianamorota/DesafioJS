@@ -10,6 +10,7 @@ function inicializaArray()
     cadastro[i] = {escola: "escola " + (i+1)};
   }
 }
+//-----------------------------------------------------------------------------
 
 //limpa a lista de escolas
 function limparLista()
@@ -43,7 +44,52 @@ function carregaCombo()
   }
 }
 
-//cadastrar cidade para a escola selecionada
+//listar escolas cadastrados
+function listarEscolas()
+{
+  camposCadastro('hidden');
+  botoesEditarExcluir('visible');
+  limparLista();
+  for (var i = 0; i < cadastro.length; i++)
+  {
+    var lista = document.getElementById("lista");
+    var desc = cadastro[i].escola;
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "item";
+    checkbox.id = i;
+    lista.appendChild(checkbox);
+
+    var label = document.createElement('label')
+    label.htmlFor = desc;
+    label.appendChild(document.createTextNode(desc));
+
+    lista.appendChild(label);
+    lista.appendChild(document.createElement("br"));
+  }
+}
+
+//alterar a visibilidade dos campos
+function camposCadastro(tipo)
+{
+  limparLista();
+  botoesEditarExcluir('hidden');
+  document.getElementById("escola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAddEscola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("lblEscola").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAlterar").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnAlterar").disabled = true;
+  document.getElementById("btnAddEscola").disabled = false;
+  document.getElementById("escola").value = "";
+}
+
+function botoesEditarExcluir(tipo)
+{
+  document.getElementById("btnEditar").setAttribute('style', 'visibility:' + tipo);
+  document.getElementById("btnExcluir").setAttribute('style', 'visibility:' + tipo);
+}
+//-----------------------------------------------------------------------------
+
 function adicionarCidade()
 {
   //pega id da escola
@@ -62,7 +108,6 @@ function adicionarCidade()
   testLista();
 }
 
-//cadastrar nova escola
 function adicionarEscola()
 {
   limparLista();
@@ -93,54 +138,7 @@ function editarEscola()
   listarEscolas();
 }
 
-function listarEscolas()
-{
-  camposCadastro('hidden');
-  botoesEditarExcluir('visible');
-  limparLista();
-  for (var i = 0; i < cadastro.length; i++)
-  {
-    var lista = document.getElementById("lista");
-    var desc = cadastro[i].escola;
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "item";
-    checkbox.id = i;
-    lista.appendChild(checkbox);
-
-    var label = document.createElement('label')
-    label.htmlFor = desc;
-    label.appendChild(document.createTextNode(desc));
-
-    lista.appendChild(label);
-    lista.appendChild(document.createElement("br"));
-  }
-}
-/*
-function buscar()
-{
-	limparLista();
-	var valorE = document.getElementById("cbbEscola").value;
-	if(valorE == -1)
-	{
-		alert("Selecione uma escola");
-	}
-	else
-	{
-		var lista = document.getElementById("lista");
-		var escola = document.createElement('li');
-		escola.innerText = cadastro[valorE].escola;
-		lista.appendChild(escola);
-		var cidade = document.createElement('li');
-		cidade.innerText = cadastro[valorE].cidade;
-		lista.appendChild(cidade);
-		document.getElementById("btnEditar").setAttribute('style', 'visibility:visible');
-		document.getElementById("btnExcluir").setAttribute('style', 'visibility:visible');
-	}
-}
-*/
-
-function excluir()
+function excluirEscola()
 {
   var checkbox = document.getElementsByName("item");
   var checked = false;
@@ -164,7 +162,7 @@ function excluir()
   }
 }
 
-function validaEditar()
+function validarEdicao()
 {
   var checkbox = document.getElementsByName("item");
   var cont = 0;
@@ -193,25 +191,29 @@ function validaEditar()
   }
 }
 
-//show or hide os campos para cadastro de uma nova escola
-function camposCadastro(tipo)
+/*
+function buscar()
 {
-  limparLista();
-  botoesEditarExcluir('hidden');
-  document.getElementById("escola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAddEscola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("lblEscola").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAlterar").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnAlterar").disabled = true;
-  document.getElementById("btnAddEscola").disabled = false;
-  document.getElementById("escola").value = "";
+	limparLista();
+	var valorE = document.getElementById("cbbEscola").value;
+	if(valorE == -1)
+	{
+		alert("Selecione uma escola");
+	}
+	else
+	{
+		var lista = document.getElementById("lista");
+		var escola = document.createElement('li');
+		escola.innerText = cadastro[valorE].escola;
+		lista.appendChild(escola);
+		var cidade = document.createElement('li');
+		cidade.innerText = cadastro[valorE].cidade;
+		lista.appendChild(cidade);
+		document.getElementById("btnEditar").setAttribute('style', 'visibility:visible');
+		document.getElementById("btnExcluir").setAttribute('style', 'visibility:visible');
+	}
 }
-
-function botoesEditarExcluir(tipo)
-{
-  document.getElementById("btnEditar").setAttribute('style', 'visibility:' + tipo);
-  document.getElementById("btnExcluir").setAttribute('style', 'visibility:' + tipo);
-}
+*/
 
 ///*
 //teste listarEscolas
