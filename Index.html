@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+
+    <h3>Cadastro de escola</h3>
+    Escola: <select id="cbbEscola"> </select>
+    <br>
+    Cidade: <input type="text" id="cidade">
+    <br>
+    <input type="button" onclick="adicionar()" value="Ok">
+    <input type="button" onclick="checkboxTeste()" value="Listar escolas">
+    <input type="button" onclick="camposCadastro('visible')" value="Nova escola">
+    <br><br>
+
+    <ul id="lista">  </ul>
+    <label id="checkboxLista"></label>
+    <label id="lblEscola" style="visibility:hidden">Escola: </label>
+    <input type="text" id="escola" style="visibility:hidden">
+    <br>
+    <input type="button" id="btnAddEscola" onclick="addEscola()" value="Salvar" style="visibility:hidden">
+
+<!--
+<h3>Pesquisa</h3>
+Escola: <select id="cbbEscola"> </select>
+<input type="button" onclick="buscar()" value="Buscar">
+<br><br>
+-->
+
+
+	<input type="button" id="btnEditar" value="Editar" onclick="editar()" style="visibility:hidden">
+	<input type="button" id="btnExcluir" value="Excluir" onclick="excluir()" style="visibility:hidden">
+	<script src="script.js"></script>
+  </body>
+</html>
