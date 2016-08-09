@@ -9,7 +9,9 @@ function inicializaArray()
   {
     cadastro[i] = {escola: "escola " + (i+1)};
   }
+
 }
+
 //-----------------------------------------------------------------------------
 
 //limpa a lista de escolas
@@ -83,6 +85,9 @@ function listarEscolas()
       lista.appendChild(label);
       lista.appendChild(document.createElement("br"));
     }
+	var retrievedObject = localStorage.getItem('cadastro');
+
+console.log('retrievedObject: ', JSON.parse(retrievedObject));
   }
   catch (e)
   {
@@ -116,6 +121,7 @@ function adicionarCidade()
     }
     alert("Cadastro realizado com sucesso!");
     listarEscolas();
+	localStorage.setItem('cadastro', JSON.stringify(cadastro));
   }
   catch(e)
   {
