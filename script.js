@@ -64,10 +64,9 @@
       var retrievedObject = localStorage.getItem('cadastro');
       cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
       limparLista();
-    	botoesEditarExcluir('hidden');
-    	document.getElementById("escola").value = "";
       botoesEditarExcluir('visible');
-      limparLista();
+    	document.getElementById("escola").value = "";
+
       for (var i = 0; i < cadastro.length; i++)
       {
         var lista = document.getElementById("lista");
@@ -184,13 +183,16 @@
     	}
     	else
     	{
+        var retrievedObject = localStorage.getItem('cadastro');
+        cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
         cadastro[id].cidade = document.getElementById("cidade").value;
         carregaCombo();
         document.getElementById("cidade").value = "";
-        alert("Cadastro realizado com sucesso!");
         limparLista();
         botoesEditarExcluir('hidden');
     	  localStorage.setItem('cadastro', JSON.stringify(cadastro));
+        alert("Cadastro realizado com sucesso!");
+        console.log(cadastro);
       }
     }
     catch(e)
@@ -215,10 +217,11 @@
         cadastro[cadastro.length] = {escola: nomeEscola};
     	  //limpa text da escola
     	  document.getElementById("escola").value = "";
+        localStorage.setItem('cadastro', JSON.stringify(cadastro));
     	  carregaCombo();
         botoesEditarExcluir('hidden');
     	  alert("Cadastro realizado com sucesso!");
-        localStorage.setItem('cadastro', JSON.stringify(cadastro));
+
       }
     }
     catch (e)
@@ -233,15 +236,20 @@
     {
       var retrievedObject = localStorage.getItem('cadastro');
       cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
+
       var id = document.getElementById("escola").name;
       var escola = document.getElementById("escola").value;
+
       cadastro[id].escola = escola;
-    	document.getElementById("btnAlterar").disabled = true;
+
+      document.getElementById("btnAlterar").disabled = true;
     	document.getElementById("btnAddEscola").disabled = false;
     	document.getElementById("escola").value = "";
       localStorage.setItem('cadastro', JSON.stringify(cadastro));
+
       carregaCombo();
-      listarEscolas();
+      mudaPagina(1);
+      //listarEscolas();
       alert("Alteracao realizada com sucesso!");
 
     }
@@ -271,7 +279,8 @@
       {
         localStorage.setItem('cadastro', JSON.stringify(cadastro));
         limparLista();
-        listarEscolas();
+        mudaPagina(1);
+        //listarEscolas();
         carregaCombo();
         alert("Exclusao realizada com sucesso!");
 
@@ -316,9 +325,93 @@
     }
   }
 
+//--------------------------------------------------------------
+//PAGINAÇÃO
 
+var pagAtual = 1;
+var itensPorPagina = 3; //depois vai vim como parâmetro
 
+function pagAnt()
+{
+  if(pagAtual > 1)
+  {
+    pagAtual--;
+    mudaPagina(pagAtual);
+  }
+}
 
+function pagProx()
+{
+  if(pagAtual < contarPaginas())
+  {
+    pagAtual++;
+    mudaPagina(pagAtual);
+  }
+}
+
+function mudaPagina(page)
+{
+  var btnProx = document.getElementById("pagProx");
+  var btnAnt = document.getElementById("pagAnt");
+  var lista = document.getElementById("lista");
+  var status = document.getElementById("page");
+
+  //valida página
+  if(page < 1) page = 1;
+  if(page > contarPaginas()) page = contarPaginas();
+
+  limparLista();
+  botoesEditarExcluir('visible');
+  var retrievedObject = localStorage.getItem('cadastro');
+  cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
+  document.getElementById("escola").value = "";
+
+  for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < cadastro.length; i++)
+  {
+    var lista = document.getElementById("lista");
+    var cidade = cadastro[i].cidade;
+    if(typeof cidade == "undefined") cidade = "-"
+
+    var desc = cadastro[i].escola + " / " + cidade;
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "item";
+    checkbox.id = i;
+    lista.appendChild(checkbox);
+
+    var label = document.createElement('label')
+    label.htmlFor = desc;
+    label.appendChild(document.createTextNode(desc));
+
+    lista.appendChild(label);
+    lista.appendChild(document.createElement("br"));
+  }
+  status.innerHTML = page + "/" + contarPaginas();
+
+  if(page == 1)
+    btnAnt.style.visibility = "hidden";
+  else
+    btnAnt.style.visibility = "visible";
+
+  if(page == contarPaginas())
+    btnProx.style.visibility = "hidden";
+  else
+    btnProx.style.visibility = "visible";
+}
+
+function contarPaginas()
+{
+  var retrievedObject = localStorage.getItem('cadastro');
+  cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
+  return Math.ceil(cadastro.length / itensPorPagina);
+}
+
+// window.onload = function()
+// {
+//   mudaPagina(1);
+// }
+
+//--------------------------------------------------------------
   inicializaArray();
   carregaCombo();
   document.getElementById("btnAlterar").disabled = true;
