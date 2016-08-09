@@ -175,6 +175,7 @@
   {
     try
     {
+      limparLista();
       //pega id da escola
       var id = document.getElementById("cbbEscola").value;
     	if(id == -1)
@@ -185,14 +186,16 @@
     	{
         var retrievedObject = localStorage.getItem('cadastro');
         cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
+
         cadastro[id].cidade = document.getElementById("cidade").value;
+        localStorage.setItem('cadastro', JSON.stringify(cadastro));
+        console.log(cadastro);
         carregaCombo();
         document.getElementById("cidade").value = "";
         limparLista();
         botoesEditarExcluir('hidden');
-    	  localStorage.setItem('cadastro', JSON.stringify(cadastro));
+
         alert("Cadastro realizado com sucesso!");
-        console.log(cadastro);
       }
     }
     catch(e)
@@ -214,6 +217,8 @@
       }
       else
       {
+        var retrievedObject = localStorage.getItem('cadastro');
+        cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
         cadastro[cadastro.length] = {escola: nomeEscola};
     	  //limpa text da escola
     	  document.getElementById("escola").value = "";
@@ -298,17 +303,25 @@
 
   function validarEdicao()
   {
+    var retrievedObject = localStorage.getItem('cadastro');
+    cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
     var checkbox = document.getElementsByName("item");
-    var cont = 0;
-    var id;
-    for (var i = checkbox.length - 1; i >= 0; i--)
+    var cont = 0; var indice=0; var id; var inicio; var parada;
+    inicio = (pagAtual-1) * itensPorPagina;
+    parada = (pagAtual * itensPorPagina) -1;
+    console.log(inicio);
+    console.log(parada);
+    for (var i = inicio; i < parada; i++)
     {
-      if (checkbox[i].checked == true)
+
+      if (checkbox[indice].checked == true)
       {
         id = i;
         cont++;
       }
+      indice++;
     }
+
     if(cont == 1)
     {
       limparLista();
@@ -323,7 +336,7 @@
     {
       alert("Selecione um item para editar");
     }
-  }
+}
 
 //--------------------------------------------------------------
 //PAGINAÇÃO
@@ -364,6 +377,7 @@ function mudaPagina(page)
   botoesEditarExcluir('visible');
   var retrievedObject = localStorage.getItem('cadastro');
   cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
+  console.log(cadastro);
   document.getElementById("escola").value = "";
 
   for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < cadastro.length; i++)
