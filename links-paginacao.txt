@@ -1,3 +1,7 @@
 https://javiani.wordpress.com/2010/08/22/paginacao-em-javascript-parte-1/
 http://tableless.com.br/paginacao-com-javascript-e-jquery/
 https://www.youtube.com/watch?v=ruchiyg_hk0
+
+http://jsfiddle.net/Lzp0dw83/1/
+http://stackoverflow.com/questions/25434813/simple-pagination-in-javascript
+http://en.newinstance.it/2006/09/27/client-side-html-table-pagination-with-javascript/#
