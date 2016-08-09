@@ -63,7 +63,6 @@
     {
       var retrievedObject = localStorage.getItem('cadastro');
       cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
-      console.log(cadastro);
       limparLista();
     	botoesEditarExcluir('hidden');
     	document.getElementById("escola").value = "";
@@ -213,7 +212,6 @@
       }
       else
       {
-        console.log(cadastro.length);
         cadastro[cadastro.length] = {escola: nomeEscola};
     	  //limpa text da escola
     	  document.getElementById("escola").value = "";
