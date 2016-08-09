@@ -3,7 +3,7 @@
   <head>
   </head>
   <body>
-    <h3>Cadastro de escola</h3>
+    <h3>Cadastro</h3>
     Escola: <select id="cbbEscola"> </select>
     <br>
     Cidade: <input type="text" id="cidade">
@@ -13,13 +13,16 @@
     <input type="button" onclick="listarEscolas()" value="Listar escolas">
     <br><br>
 
+    <h3>Nova Escola</h3>
     <label id="lblEscola">Escola: </label>
     <input type="text" id="escola">
     <br>
     <input type="button" id="btnAddEscola" onclick="adicionarEscola()" value="Salvar" >
     <input type="button" id="btnAlterar" onclick="editarEscola()" value="Alterar" >
-    <br><br><br>
-    Busca:
+    <br><br>
+
+    <h3>Busca</h3>
+    Opcao:
     <select id="cbbFiltro">
       <option value="escola">Escola</option>
       <option value="cidade">Cidade</option>

@@ -118,10 +118,11 @@ function adicionarCidade()
       cadastro[id].cidade = document.getElementById("cidade").value;
       carregaCombo();
       document.getElementById("cidade").value = "";
+      alert("Cadastro realizado com sucesso!");
+      listarEscolas();
+  	   localStorage.setItem('cadastro', JSON.stringify(cadastro));
     }
-    alert("Cadastro realizado com sucesso!");
-    listarEscolas();
-	localStorage.setItem('cadastro', JSON.stringify(cadastro));
+
   }
   catch(e)
   {
@@ -136,7 +137,7 @@ function adicionarEscola()
     limparLista();
     var nomeEscola = document.getElementById("escola").value;
     //verifica se o campo está em branco
-    if(nomeEscola.length === 0)
+    if(nomeEscola.length == 0)
     {
       alert("Digite o nome de uma escola");
     }
@@ -144,10 +145,11 @@ function adicionarEscola()
     {
       console.log(cadastro.length);
       cadastro[cadastro.length] = {escola: nomeEscola};
-	  //limpa text da escola
-	  document.getElementById("escola").value = "";
-	  carregaCombo();
-	  alert("Cadastro realizado com sucesso!");
+  	  //limpa text da escola
+  	  document.getElementById("escola").value = "";
+  	  carregaCombo();
+      botoesEditarExcluir('hidden');
+  	  alert("Cadastro realizado com sucesso!");
     }
   }
   catch (e)
@@ -239,11 +241,11 @@ function validarEdicao()
 
 function buscar()
 {
-	limparLista();
-	botoesEditarExcluir();
+
 	var opcao = document.getElementById("cbbFiltro").value;
 	var pesquisa = document.getElementById("pesquisa").value;
-	if (typeof pesquisa == "undefined")
+
+	if (pesquisa.length > 0)
 	{
 		var id = -1;
 		if (opcao == "escola")
@@ -266,10 +268,17 @@ function buscar()
 				}
 			}
 		}
-		
-		if (id != -1)
+		if (id == -1)
 		{
-		  var lista = document.getElementById("lista");
+		  alert("Nenhuma escola/cidade encontrada");
+      limparLista();
+      botoesEditarExcluir('hidden');
+		}
+		else
+		{
+      limparLista();
+      botoesEditarExcluir('visible');
+      var lista = document.getElementById("lista");
 		  var cidade = cadastro[id].cidade;
 		  if(typeof cidade == "undefined")
 		  {
@@ -288,10 +297,7 @@ function buscar()
 
 		  lista.appendChild(label);
 		  lista.appendChild(document.createElement("br"));
-		}
-		else
-		{
-			alert("Nenhuma escola/cidade encontrada");
+
 		}
 	}
 	else
@@ -304,4 +310,3 @@ function buscar()
 inicializaArray();
 carregaCombo();
 document.getElementById("btnAlterar").disabled = true;
-
