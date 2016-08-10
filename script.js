@@ -303,7 +303,7 @@
     }
   }
 
-  function validarEdicao()
+   function validarEdicao()
   {
     var retrievedObject = localStorage.getItem('cadastro');
     cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
@@ -311,17 +311,22 @@
     var cont = 0; var indice=0; var id; var inicio; var parada;
     inicio = (pagAtual-1) * itensPorPagina;
     parada = (pagAtual * itensPorPagina) -1;
-
+	console.log(inicio);
+	console.log(parada);
     for (var i = inicio; i <= parada; i++)
     {
-      console.log(i);
-      if (checkbox[indice].checked == true)
-      {
-        id = i;
-        cont++;
-      }
-      console.log(indice);
-      indice++;
+		if (indice < checkbox.length)
+		{
+			console.log(i);
+			if (checkbox[indice].checked == true)
+			{
+				id = i;
+				cont++;
+			}
+			console.log(indice);
+			indice++;
+		}
+      
     }
 
     if(cont == 1)
