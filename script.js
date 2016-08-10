@@ -115,18 +115,24 @@
     cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
   	var opcao = document.getElementById("cbbFiltro").value;
   	var pesquisa = document.getElementById("pesquisa").value;
-
+    var id = -1;
   	if (pesquisa.length > 0)
   	{
-  		var id = -1;
+
   		if (opcao == "escola")
   			for (var i = 0; i < cadastro.length; i++)
-  				if (cadastro[i].escola == pesquisa)
+        {
+          if (cadastro[i].escola == pesquisa)
   					id = i;
+        }
+
   		else
   			for (var i = 0; i < cadastro.length; i++)
-  				if (cadastro[i].cidade == pesquisa)
-  					id = i;
+        {
+          if (cadastro[i].cidade == pesquisa)
+            id = i;
+        }
+
 
   		if (id == -1)
   		{
@@ -326,7 +332,7 @@
 			console.log(indice);
 			indice++;
 		}
-      
+
     }
 
     if(cont == 1)
@@ -340,9 +346,7 @@
       document.getElementById('escola').name = id;
     }
     else
-    {
       alert("Selecione um item para editar");
-    }
 }
 
 //--------------------------------------------------------------
