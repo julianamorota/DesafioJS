@@ -29,7 +29,7 @@
     </select>
     <input type="text" id="pesquisa">
     <br>
-    <input type="button" id="btnBuscar" onclick="buscar()" value=Buscar>
+    <input type="button" id="btnBuscar" onclick="buscar()" value="Buscar">
     <br><br>
 
     <label id="lista"></label>
@@ -39,12 +39,17 @@
     <a href="javascript:pagProx()" id="pagProx" style="visibility:hidden">Prox</a>
     <br>
     <span id="page" style="visibility:hidden"></span>
+    <br>
+    <span id="total" style="visibility:hidden"></span>
     <!-- paginação -->
     <br>
     <input type="button" id="btnEditar" value="Editar" onclick="validarEdicao()" style="visibility:hidden">
     <input type="button" id="btnExcluir" value="Excluir" onclick="excluirEscola()" style="visibility:hidden">
     <br>
 
+    <h4>Parametro - Paginacao</h4>
+    <input type="text" id="parametroPag" size="2">
+    <input type="button" id="btnParametro" onclick="salvarParametro()" value="Salvar">
 
   	<script src="script.js"></script>
   </body>

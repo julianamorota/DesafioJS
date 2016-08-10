@@ -107,6 +107,7 @@
     document.getElementById("pagAnt").setAttribute('style', 'visibility:' + tipo);
     document.getElementById("pagProx").setAttribute('style', 'visibility:' + tipo);
     document.getElementById("page").setAttribute('style', 'visibility:' + tipo);
+    document.getElementById("total").setAttribute('style', 'visibility:' + tipo);
   }
 
   function buscar()
@@ -208,7 +209,6 @@
       //verifica se o campo está em branco
       if(nomeEscola.length == 0)
         alert("Digite o nome de uma escola");
-
       else
       {
         var retrievedObject = localStorage.getItem('cadastro');
@@ -352,8 +352,37 @@
 //--------------------------------------------------------------
 //PAGINAÇÃO
 
+//ver se existe valor cadastrado de parâmetro, se não
+//coloca o valor padrão que é 3
+var retrievedObject = localStorage.getItem('parametro');
+var parametro = ('retrievedObject: ', JSON.parse(retrievedObject));
 var pagAtual = 1;
-var itensPorPagina = 3; //depois vai vim como parâmetro
+
+if (parametro)
+  itensPorPagina = parametro;
+else
+  itensPorPagina=3; //padrão
+
+function salvarParametro()
+{
+  try
+  {
+    var pesquisa = document.getElementById("parametroPag").value;
+    if (pesquisa.length > 0)
+    {
+      itensPorPagina = pesquisa;
+      localStorage.setItem('parametro', JSON.stringify(itensPorPagina));
+      document.getElementById("parametroPag").value = "";
+      alert("Cadastro de parametro de paginas realizado com sucesso!");
+    }
+    else
+      alert("Digite o numero de paginas.");
+  }
+  catch(e)
+  {
+    alert(e);
+  }
+}
 
 function pagAnt()
 {
@@ -375,7 +404,6 @@ function pagProx()
 
 function mudaPagina(page)
 {
-
   var btnProx = document.getElementById("pagProx");
   var btnAnt = document.getElementById("pagAnt");
   var lista = document.getElementById("lista");
@@ -413,6 +441,7 @@ function mudaPagina(page)
     lista.appendChild(label);
     lista.appendChild(document.createElement("br"));
   }
+
   status.innerHTML = page + "/" + contarPaginas();
 
   if(page == 1)
@@ -424,6 +453,18 @@ function mudaPagina(page)
     btnProx.style.visibility = "hidden";
   else
     btnProx.style.visibility = "visible";
+
+  //total (exibindo x itens de y)
+  //"exibindo " + x + " itens de " + y;
+  var lista = document.getElementsByName("item");
+  var x = lista.length;
+  var y = cadastro.length;
+  var pri = parseInt(lista[0].id);
+  var ult = pri + parseInt(itensPorPagina);
+  if (ult > y)
+    ult=y;
+  var expressao = "exibindo "+(pri+1)+"-"+ult+" ("+x+") itens de " + y;
+  document.getElementById("total").innerHTML =expressao;
 }
 
 function contarPaginas()
@@ -432,11 +473,6 @@ function contarPaginas()
   cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
   return Math.ceil(cadastro.length / itensPorPagina);
 }
-
-// window.onload = function()
-// {
-//   mudaPagina(1);
-// }
 
 //--------------------------------------------------------------
   inicializaArray();
