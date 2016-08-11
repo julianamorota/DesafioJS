@@ -18,6 +18,8 @@ $(document).ready(function()
   //Salvar cidade e estado
   $('#btnSalvar').click(function()
   {
+	  var retrievedObject = localStorage.getItem('local');
+      local = ('retrievedObject: ', JSON.parse(retrievedObject));
       var cidade = $('input[id=cidade]').val();
       var estado = $('input[id=estado]').val();
       //validações

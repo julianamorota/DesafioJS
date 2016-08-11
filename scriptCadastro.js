@@ -1,5 +1,5 @@
 var cadastro = [];
-
+var local = [];
 //inicializa o array com 5 escolas
 function inicializaArray()
 {
@@ -13,7 +13,7 @@ function inicializaArray()
 }
 
 //carregar combo da escola
-function carregaCombo()
+function carregaComboEscola()
 {
   try
   {
@@ -43,39 +43,69 @@ function carregaCombo()
   }
 }
 
+function carregaComboCidade()
+{
+  try
+  {
+    var retrievedObject = localStorage.getItem('local');
+    local = ('retrievedObject: ', JSON.parse(retrievedObject));
+    //limpa os combos
+    document.getElementById("cbbCidade").innerHTML = "";
+    var cbbCidade = document.getElementById("cbbCidade");
+    //opção de busca vazia
+    var opVazia = document.createElement('option');
+    opVazia.innerHTML = "-";
+    opVazia.value = -1;
+
+    cbbCidade.appendChild(opVazia);
+    //preenche combos
+    for (var i = 0; i < local.length; i++)
+    {
+      var opE = document.createElement('option');
+      opE.innerHTML = local[i].cidade;
+      opE.value = i;
+      cbbCidade.appendChild(opE);
+    }
+  }
+  catch (e)
+  {
+    alert(e);
+  }
+}
+
 function adicionarCidade()
 {
   try
   {
     //pega id da escola
-    var id = document.getElementById("cbbEscola").value;
-    var cidade = document.getElementById("cidade").value;
-    if(id != -1 && cidade)
+    var idEscola = document.getElementById("cbbEscola").value;
+    var idCidade = document.getElementById("cbbCidade").value;
+    if(idEscola != -1 && idCidade != -1)
     {
       var retrievedObject = localStorage.getItem('cadastro');
       cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
 
-      if(cadastro[id].cidade)
+      if(cadastro[idEscola].cidade)
       {
         var decisao = confirm("Ja existe uma cidade cadastrada para essa escola.\nContinuar?");
         if(decisao)
         {
-          cadastro[id].cidade = document.getElementById("cidade").value;
+          cadastro[idEscola].cidade = idCidade;
           localStorage.setItem('cadastro', JSON.stringify(cadastro));
           //limpa e recarrega
-          carregaCombo();
-          document.getElementById("cidade").value = "";
+          carregaComboEscola();
+		  carregaComboCidade();
           mudaPagina(1);
           alert("Cadastro realizado com sucesso!");
         }
       }
       else
       {
-        cadastro[id].cidade = document.getElementById("cidade").value;
+        cadastro[idEscola].cidade = idCidade;
         localStorage.setItem('cadastro', JSON.stringify(cadastro));
         //limpa e recarrega
-        carregaCombo();
-        document.getElementById("cidade").value = "";
+        carregaComboEscola();
+		carregaComboCidade();
         mudaPagina(1);
         alert("Cadastro realizado com sucesso!");
       }
@@ -90,4 +120,5 @@ function adicionarCidade()
 }
 
 inicializaArray();
-carregaCombo();
+carregaComboEscola();
+carregaComboCidade();
