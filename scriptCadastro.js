@@ -94,7 +94,7 @@ function adicionarCidade()
           localStorage.setItem('cadastro', JSON.stringify(cadastro));
           //limpa e recarrega
           carregaComboEscola();
-		  carregaComboCidade();
+		      carregaComboCidade();
           mudaPagina(1);
           alert("Cadastro realizado com sucesso!");
         }
