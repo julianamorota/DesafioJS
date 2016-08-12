@@ -17,99 +17,136 @@
   {
     var retrievedObject = localStorage.getItem('cadastro');
     cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
-	
-	var retrievedObject = localStorage.getItem('local');
-	local = ('retrievedObject: ', JSON.parse(retrievedObject));
-	
-  	var opcao = document.getElementById("cbbFiltro").value;
-  	var pesquisa = document.getElementById("pesquisa").value;
+
+    var retrievedObject = localStorage.getItem('local');
+    local = ('retrievedObject: ', JSON.parse(retrievedObject));
+
+    var opcao = document.getElementById("cbbFiltro").value;
+    var pesquisa = document.getElementById("pesquisa").value;
     var idCadastro = -1;
-	var idLocal = -1;
-	var cidade;
-  	if (pesquisa)
-  	{
-  		if (opcao == "escola")
-		{
-			for (var i = 0; i < cadastro.length; i++)
-			{
-				if (cadastro[i].escola == pesquisa)
-				{
-					idCadastro = i;
-					idLocal = cadastro[idCadastro].cidade;
-					
-					if(!idLocal)
-						cidade = "-"
-					else
-						cidade = local[idLocal].cidade;
-				}
-  					
-			}
-		}
-  			
-		//por cidade
-  		else
-		{
-			var idCidade = -1;
-			for (var i = 0; i < local.length; i++)
-			{
-				if (local[i].cidade == pesquisa)
-				{
-					idCidade = i;
-					break;
-				}
-			}
-			if (idCidade != -1)
-			{
-				for (var j = 0; j < cadastro.length; j++)
-				{
-					if(cadastro[j].cidade == idCidade)
-					{
-						idCadastro = j;
-						cidade = local[idCidade].cidade;
-					}
-						
-					
-				}
-			}	
-			
-		}
-  			
+    var idLocal = -1;
+    var cidade;
 
-  		if (idCadastro == -1)
-  		{
-  		  alert("Nenhuma escola/cidade encontrada");
-		}
-		else
-		{
-		  limparLista();
-		  document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
-		  var lista = document.getElementById("lista");
-		 
-		  var desc = cadastro[idCadastro].escola + " / " + cidade;
-		  var checkbox = document.createElement("input");
-		  checkbox.type = "checkbox";
-		  checkbox.name = "item";
-		  checkbox.id = idCadastro;
-		  lista.appendChild(checkbox);
+    //usuário não digitou
+    if (pesquisa)
+    {
+        //POR ESCOLA
+        if (opcao == "escola")
+        {
+          //pega o id da escola
+          for (var i = 0; i < cadastro.length; i++)
+          {
+            if (cadastro[i].escola == pesquisa)
+            {
+              idCadastro = i;
+              idLocal = cadastro[idCadastro].cidade;
 
-		  var label = document.createElement('label')
-		  label.htmlFor = desc;
-		  label.appendChild(document.createTextNode(desc));
+              if(!idLocal)
+                cidade = "-"
+              else
+                cidade = local[idLocal].cidade;
+            }
+          }
+          if (idCadastro == -1)
+          {
+            alert("Nenhuma escola/cidade encontrada");
+            limparLista();
+            document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
+          }
+          else
+          {
+            limparLista();
+            document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
+            document.getElementById("pag").setAttribute('style', 'visibility:hidden');
+            document.getElementById("pagAnt").setAttribute('style', 'visibility:hidden');
+            document.getElementById("pagProx").setAttribute('style', 'visibility:hidden');
+            var lista = document.getElementById("lista");
 
-		  lista.appendChild(label);
-		  lista.appendChild(document.createElement("br"));
-		}
-			
-	}
-  	else
-  	{
-	  alert("Digite o nome da escola/cidade");
-	  limparLista();
-	  document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
-	  document.getElementById("pagAnt").setAttribute('style', 'visibility:hidden');
-	  document.getElementById("pagProx").setAttribute('style', 'visibility:hidden');
-  	}
-  		
+            var desc = cadastro[idCadastro].escola + " / " + cidade;
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "item";
+            checkbox.id = idCadastro;
+            lista.appendChild(checkbox);
+
+            var label = document.createElement('label')
+            label.htmlFor = desc;
+            label.appendChild(document.createTextNode(desc));
+
+            lista.appendChild(label);
+            lista.appendChild(document.createElement("br"));
+          }
+        }
+
+        //POR CIDADE
+        else
+        {
+          var busca = []; var j = 0; var idCidade = -1;
+          //rodar pelo array local pesquisando correspondência
+          for (var i = 0; i < local.length; i++)
+          {
+            if (local[i].cidade == pesquisa)
+            {
+              idCidade = i;
+              break;
+            }
+          }
+
+          //SE ACHOU NO LOCAL, TEM QUE PEGAR O ID DO CADASTRO
+          if (idCidade != -1)
+          {
+            for (var i = 0; i < cadastro.length; i++)
+            {
+              if(cadastro[i].cidade == idCidade)
+              {
+                busca[j] = i;
+                j++;
+              }
+            }
+            console.log(busca);
+            if (busca.length > 0)
+            {
+              cidade = local[idCidade].cidade;
+              limparLista();
+              document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
+              document.getElementById("pag").setAttribute('style', 'visibility:hidden');
+              document.getElementById("pagAnt").setAttribute('style', 'visibility:hidden');
+              document.getElementById("pagProx").setAttribute('style', 'visibility:hidden');
+              for (var i = 0; i < busca.length; i++)
+              {
+                  var lista = document.getElementById("lista");
+                  var desc = cadastro[busca[i]].escola + " / " + cidade;
+
+                  var checkbox = document.createElement("input");
+                  checkbox.type = "checkbox";
+                  checkbox.name = "item";
+                  checkbox.id = busca[i];
+                  lista.appendChild(checkbox);
+
+                  var label = document.createElement('label')
+                  label.htmlFor = desc;
+                  label.appendChild(document.createTextNode(desc));
+
+                  lista.appendChild(label);
+                  lista.appendChild(document.createElement("br"));
+              }
+            }
+            else
+              alert("Nenhum cadastro de escola com a respectiva cidade encontrado");
+          }
+          else
+              alert("Cidade nao encontrada");
+        }
+    }//usuário não digitou
+    else
+    {
+      alert("Digite o nome da escola/cidade");
+      limparLista();
+      document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
+      document.getElementById("pagAnt").setAttribute('style', 'visibility:hidden');
+      document.getElementById("pagProx").setAttribute('style', 'visibility:hidden');
+    }
+
   }
   //-----------------------------------------------------------------------------
 
@@ -135,7 +172,7 @@
         if (indice >= 0)
           if (indice >= 0 && checkbox[indice].checked == true)
           {
-            cadastro.splice(i, 1);
+            cadastro.splice(checkbox[indice].id, 1);
             checked = true;
           }
         indice--;
@@ -143,6 +180,7 @@
       if(checked)
       {
         localStorage.setItem('cadastro', JSON.stringify(cadastro));
+        limparLista();
         mudaPagina(1);
         alert("Exclusao realizada com sucesso!");
       }
@@ -243,7 +281,7 @@
      {
        if (checkbox[indice].checked == true)
        {
-         id = i;	cont++;
+         id = checkbox[indice].id;	cont++;
        }
        indice++;
      }
@@ -328,12 +366,12 @@ function mudaPagina(page)
   if(page > contarPaginas()) page = contarPaginas();
   limparLista();
   document.getElementById("pagAnt").setAttribute('style', 'visibility:visible');
-  
+
   var retrievedObject = localStorage.getItem('cadastro');
   cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
   var retrievedObject = localStorage.getItem('local');
   local = ('retrievedObject: ', JSON.parse(retrievedObject));
-  
+
   for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < cadastro.length; i++)
   {
     var lista = document.getElementById("lista");
@@ -402,7 +440,7 @@ function editarOutraPagina()
     {
       if (checkbox[indice].checked == true)
       {
-        id = i;	cont++;
+        id = checkbox[indice].id;	cont++;
       }
       indice++;
     }
