@@ -88,6 +88,7 @@ $(document).ready(function()
         $('#btnAlterar').prop("disabled", true);
         $('#btnSalvar').prop("disabled", false);
         localStorage.setItem('redirectLocal', JSON.stringify("true"));
+        $("#titulo").html("Cadastro");
         alert("Alteracao realizada com sucesso!");
       }
       else

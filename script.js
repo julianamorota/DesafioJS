@@ -1,7 +1,7 @@
   //array global - cadastro.escola e cadastro.cidade
   var cadastro = [];
   var local = [];
-
+  
   //limpa a lista de escolas
   function limparLista()
   {
@@ -208,6 +208,7 @@
       document.getElementById('escola').name = idEscola;
       document.getElementById("btnAlterar").disabled = false;
       document.getElementById("btnAddEscola").disabled = true;
+        document.getElementById('titulo').innerHTML = "Alteracao de escolas";
     }
   }
 
@@ -228,9 +229,10 @@
       document.getElementById("btnAddEscola").disabled = false;
       document.getElementById("escola").value = "";
       localStorage.setItem('cadastro', JSON.stringify(cadastro));
-      mudaPagina(1);
       localStorage.setItem('redirect', JSON.stringify("true"));
+      document.getElementById("titulo").innerHTML = "Cadastro de escolas";
       alert("Alteracao realizada com sucesso!");
+
 
     }
     catch (e)
@@ -255,7 +257,6 @@
         //limpa text da escola
         document.getElementById("escola").value = "";
         localStorage.setItem('cadastro', JSON.stringify(cadastro));
-        mudaPagina(1);
         alert("Cadastro realizado com sucesso!");
       }
     }
@@ -354,6 +355,7 @@ function pagProx()
 function mudaPagina(page)
 {
   document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
+  document.getElementById("pag").setAttribute('style', 'visibility:visible');
   pagAtual = page;
   var btnProx = document.getElementById("pagProx");
   var btnAnt = document.getElementById("pagAnt");

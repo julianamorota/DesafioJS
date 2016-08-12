@@ -1,5 +1,7 @@
 var cadastro = [];
 var local = [];
+document.getElementById('titulo').innerHTML = "Cadastro de escolas";
+
 //inicializa o array com 5 escolas
 function inicializaArray()
 {
@@ -95,7 +97,6 @@ function adicionarCidade()
           //limpa e recarrega
           carregaComboEscola();
 		      carregaComboCidade();
-          mudaPagina(1);
           alert("Cadastro realizado com sucesso!");
         }
       }
@@ -106,7 +107,6 @@ function adicionarCidade()
         //limpa e recarrega
         carregaComboEscola();
 		carregaComboCidade();
-        mudaPagina(1);
         alert("Cadastro realizado com sucesso!");
       }
     }
