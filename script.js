@@ -49,7 +49,7 @@
           }
           if (idCadastro == -1)
           {
-            alert("Nenhuma escola/cidade encontrada");
+            alert("Nenhuma escola encontrada com esse nome.");
             limparLista();
             document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
           }

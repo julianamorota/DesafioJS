@@ -1,6 +1,5 @@
 //array global -
 var local = [];
-
 $(document).ready(function()
 {
   //resetar array (localStorage)
@@ -8,7 +7,6 @@ $(document).ready(function()
   local = [];
   localStorage.setItem('local', JSON.stringify(local));
   */
-
   function limparLista()
   {
     $('#lista').empty();
@@ -30,8 +28,6 @@ $(document).ready(function()
         localStorage.setItem('local', JSON.stringify(local));
         //limpa os campos
         $('#cidade, #estado').val('');
-        limparLista();
-        mudaPagina(1);
         alert("Cadastro realizado com sucesso!");
       }
       else
@@ -82,7 +78,6 @@ $(document).ready(function()
     {
       var cidade = $('input[id=cidade]').val();
       var estado = $('input[id=estado]').val();
-      //*************
       var id = $('#cidade').attr('name');
       //pega o array salvo em localStorage
       var retrievedObject = localStorage.getItem('local');
@@ -155,11 +150,106 @@ $(document).ready(function()
     }
   });
 
+  $('#btnBuscar').click(function()
+  {
+    var retrievedObject = localStorage.getItem('local');
+    local = ('retrievedObject: ', JSON.parse(retrievedObject));
+
+    var opcao = $('#cbbFiltro').val();
+    var pesquisa = $("#pesquisa").val();
+    var idLocal = -1;
+
+    //usuario não digitou
+    if (pesquisa)
+    {
+        //POR CIDADE -- SIMPLES
+        if(opcao == "cidade")
+        {
+          for (var i = 0; i < local.length; i++)
+          {
+            if(local[i].cidade == pesquisa)
+            {
+              idLocal = i;
+              break;
+            }
+          }
+
+          if(idLocal == -1)
+          {
+            alert("Nenhuma cidade encontrada com esse nome.");
+            limparLista();
+            $('#apresentacao').css('visibility', 'hidden');
+          }
+          else
+          {
+              limparLista();
+              $('#apresentacao').css('visibility', 'visible');
+              $('#pag').css('visibility', 'hidden');
+              $('#pagAnt').css('visibility', 'hidden');
+              $('#pagProx').css('visibility', 'hidden');
+              var lista = $('#lista');
+        			var desc = local[i].cidade + " - " + local[i].estado;
+        			var input = lista.find('input');
+        			var status = $('#page');
+
+        			$('<input />', {type: 'checkbox', id: i, name: 'item'}).appendTo(lista);
+        			$('<label />', {text: desc}).appendTo(lista);
+        			$('<br>').appendTo(lista);
+          }
+        }
+
+        //POR ESTADO -- COMPLICADO ARRAY
+        else
+        {
+          var busca = []; var j = 0;
+
+          for(var i = 0; i < local.length; i++)
+          {
+            if(local[i].estado == pesquisa)
+            {
+              busca[j] = i;
+              j++;
+            }
+          }
+
+          if(busca.length > 0)
+          {
+            limparLista();
+            $('#apresentacao').css('visibility', 'visible');
+            $('#pag').css('visibility', 'hidden');
+            $('#pagAnt').css('visibility', 'hidden');
+            $('#pagProx').css('visibility', 'hidden');
+
+            for (var i = 0; i < busca.length; i++)
+            {
+              var lista = $('#lista');
+              var desc = local[busca[i]].cidade + " - " + local[busca[i]].estado;
+              var input = lista.find('input');
+              var status = $('#page');
+
+              $('<input />', {type: 'checkbox', id: busca[i], name: 'item'}).appendTo(lista);
+              $('<label />', {text: desc}).appendTo(lista);
+              $('<br>').appendTo(lista);
+            }
+          }
+          else
+          {
+              alert("Nenhum estado encontrado com esse nome.");
+          }
+        }
+    }//usuário não digitou
+    else
+    {
+      alert("Digite o nome da cidade/estado");
+    }
+  });
+
   //---------------------------------------------------------------
   //PAGINAÇÃO
   var retrievedObject = localStorage.getItem('parametroLocal');
   var parametro = ('retrievedObject: ', JSON.parse(retrievedObject));
   var pagAtual = 1;
+  var itensPorPagina;
   if (parametro)
     itensPorPagina = parametro;
   else
@@ -252,11 +342,7 @@ $(document).ready(function()
     }
   });
 
-  $('#btnConfig').click(function()
-  {
-    $('#config').css('visibility', 'visible');
-    $('#paginas').val(itensPorPagina);
-  });
+
   $('#btnSalvarConfig').click(function()
   {
     try
@@ -267,12 +353,10 @@ $(document).ready(function()
         itensPorPagina = paginas;
         localStorage.setItem('parametroLocal', JSON.stringify(itensPorPagina));
         $('#paginas').val('');
-        mudaPagina(1);
         alert("Cadastro de parametro de paginas realizado com sucesso!");
       }
       else
         alert("Digite o numero de paginas.");
-      $('#config').css('visibility', 'hidden');
     }
     catch (e)
     {
