@@ -103,7 +103,6 @@
                 j++;
               }
             }
-            console.log(busca);
             if (busca.length > 0)
             {
               cidade = local[idCidade].cidade;

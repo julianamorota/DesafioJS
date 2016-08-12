@@ -38,10 +38,6 @@ $(document).ready(function()
   //Editar cidade/estado
   $('#btnEditar').click(function()
   {
-    //pega o array salvo em localStorage
-    var retrievedObject = localStorage.getItem('local');
-    local = ('retrievedObject: ', JSON.parse(retrievedObject));
-
     var checkbox = $('[name="item"]');
     var cont = 0; var indice = 0; var id; var inicio; var parada;
     inicio = (pagAtual-1) * itensPorPagina;
@@ -53,7 +49,7 @@ $(document).ready(function()
       {
         if (checkbox[indice].checked == true)
         {
-          id = i; cont++;
+          id = checkbox[indice].id; cont++;
         }
         indice++;
       }
@@ -61,12 +57,10 @@ $(document).ready(function()
 
 
     if(cont == 1){
-      $('#btnAlterar').prop("disabled", false);
-      $('#btnSalvar').prop("disabled", true);
-      $('#cidade').val(local[id].cidade);
-      $('#estado').val(local[id].estado);
-      $('#cidade').attr('name', id);
+      localStorage.setItem('redirectLocal', JSON.stringify("false"));
+      localStorage.setItem('idLocal', JSON.stringify(id));
 
+      window.location="CadastrojQ.html";
     }
     else
       alert("Selecione um item para editar");
@@ -91,9 +85,9 @@ $(document).ready(function()
         localStorage.setItem('local', JSON.stringify(local));
         //limpa os campos
         $('#cidade, #estado').val('');
-        mudaPagina(1);
         $('#btnAlterar').prop("disabled", true);
         $('#btnSalvar').prop("disabled", false);
+        localStorage.setItem('redirectLocal', JSON.stringify("true"));
         alert("Alteracao realizada com sucesso!");
       }
       else
@@ -239,10 +233,11 @@ $(document).ready(function()
         }
     }//usuário não digitou
     else
-    {
       alert("Digite o nome da cidade/estado");
-    }
+
   });
+
+
 
   //---------------------------------------------------------------
   //PAGINAÇÃO
@@ -273,7 +268,7 @@ $(document).ready(function()
         {
           limparLista();
     		  $('#apresentacao').css('visibility', 'visible');
-
+          $('#pag').css('visibility', 'visible');
     		  for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < local.length; i++)
     		  {
     			var lista = $('#lista');
