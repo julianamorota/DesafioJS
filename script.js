@@ -1,7 +1,7 @@
   //array global - cadastro.escola e cadastro.cidade
   var cadastro = [];
   var local = [];
-  
+
   //limpa a lista de escolas
   function limparLista()
   {
@@ -180,8 +180,9 @@
       {
         localStorage.setItem('cadastro', JSON.stringify(cadastro));
         limparLista();
-        mudaPagina(1);
+
         alert("Exclusao realizada com sucesso!");
+        mudaPagina(1);
       }
       else
       {
@@ -354,72 +355,90 @@ function pagProx()
 
 function mudaPagina(page)
 {
-  document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
-  document.getElementById("pag").setAttribute('style', 'visibility:visible');
-  pagAtual = page;
-  var btnProx = document.getElementById("pagProx");
-  var btnAnt = document.getElementById("pagAnt");
-  var lista = document.getElementById("lista");
-  var status = document.getElementById("page");
-
-  //valida página
-  if(page < 1) page = 1;
-  if(page > contarPaginas()) page = contarPaginas();
-  limparLista();
-  document.getElementById("pagAnt").setAttribute('style', 'visibility:visible');
-
   var retrievedObject = localStorage.getItem('cadastro');
   cadastro = ('retrievedObject: ', JSON.parse(retrievedObject));
-  var retrievedObject = localStorage.getItem('local');
-  local = ('retrievedObject: ', JSON.parse(retrievedObject));
-
-  for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < cadastro.length; i++)
+  if(cadastro)
   {
-    var lista = document.getElementById("lista");
-    var idCidade = cadastro[i].cidade;
-	var cidade;
-    if(!idCidade) cidade = "-"
-	else
-		cidade = local[idCidade].cidade;
+    if(cadastro.length > 0)
+    {
+      document.getElementById("paginacao").setAttribute('style', 'visibility:visible');
+      document.getElementById("pag").setAttribute('style', 'visibility:visible');
+      pagAtual = page;
+      var btnProx = document.getElementById("pagProx");
+      var btnAnt = document.getElementById("pagAnt");
+      var lista = document.getElementById("lista");
+      var status = document.getElementById("page");
 
-    var desc = cadastro[i].escola + " / " + cidade;
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "item";
-    checkbox.id = i;
-    lista.appendChild(checkbox);
+      //valida página
+      if(page < 1) page = 1;
+      if(page > contarPaginas()) page = contarPaginas();
+      limparLista();
+      document.getElementById("pagAnt").setAttribute('style', 'visibility:visible');
 
-    var label = document.createElement('label')
-    label.htmlFor = desc;
-    label.appendChild(document.createTextNode(desc));
 
-    lista.appendChild(label);
-    lista.appendChild(document.createElement("br"));
+      var retrievedObject = localStorage.getItem('local');
+      local = ('retrievedObject: ', JSON.parse(retrievedObject));
+
+      for (var i = (page-1) * itensPorPagina; i < (page * itensPorPagina) && i < cadastro.length; i++)
+      {
+        var lista = document.getElementById("lista");
+        var idCidade = cadastro[i].cidade;
+    	var cidade;
+        if(!idCidade) cidade = "-"
+    	else
+    		cidade = local[idCidade].cidade;
+
+        var desc = cadastro[i].escola + " / " + cidade;
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "item";
+        checkbox.id = i;
+        lista.appendChild(checkbox);
+
+        var label = document.createElement('label')
+        label.htmlFor = desc;
+        label.appendChild(document.createTextNode(desc));
+
+        lista.appendChild(label);
+        lista.appendChild(document.createElement("br"));
+      }
+
+      status.innerHTML = page + "/" + contarPaginas();
+
+      if(page == 1)
+        btnAnt.style.visibility = "hidden";
+      else
+        btnAnt.style.visibility = "visible";
+
+      if(page == contarPaginas())
+        btnProx.style.visibility = "hidden";
+      else
+        btnProx.style.visibility = "visible";
+
+      //total (exibindo x itens de y)
+      //"exibindo " + x + " itens de " + y;
+      var lista = document.getElementsByName("item");
+      var x = lista.length;
+      var y = cadastro.length;
+      var pri = parseInt(lista[0].id);
+      var ult = pri + parseInt(itensPorPagina);
+      if (ult > y)
+        ult=y;
+      var expressao = "exibindo "+(pri+1)+"-"+ult+" ("+x+") itens de " + y;
+      document.getElementById("total").innerHTML =expressao;
+    }
+    else
+    {
+      alert("Nenhuma escola cadastrada");
+      document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
+    }
+
   }
-
-  status.innerHTML = page + "/" + contarPaginas();
-
-  if(page == 1)
-    btnAnt.style.visibility = "hidden";
   else
-    btnAnt.style.visibility = "visible";
-
-  if(page == contarPaginas())
-    btnProx.style.visibility = "hidden";
-  else
-    btnProx.style.visibility = "visible";
-
-  //total (exibindo x itens de y)
-  //"exibindo " + x + " itens de " + y;
-  var lista = document.getElementsByName("item");
-  var x = lista.length;
-  var y = cadastro.length;
-  var pri = parseInt(lista[0].id);
-  var ult = pri + parseInt(itensPorPagina);
-  if (ult > y)
-    ult=y;
-  var expressao = "exibindo "+(pri+1)+"-"+ult+" ("+x+") itens de " + y;
-  document.getElementById("total").innerHTML =expressao;
+   {
+      alert("Nenhuma escola cadastrada");
+      document.getElementById("paginacao").setAttribute('style', 'visibility:hidden');
+    }
 }
 
 function contarPaginas()
