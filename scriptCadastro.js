@@ -1,6 +1,6 @@
 var cadastro = [];
 var local = [];
-document.getElementById('titulo').innerHTML = "Cadastro de escolas";
+
 
 //inicializa o array com 5 escolas
 function inicializaArray()
